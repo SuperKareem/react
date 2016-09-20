@@ -1,0 +1,9 @@
+.signin { /* stylelint-disable */
+  & .signinContainer {
+    padding: 20px 25px;
+    font-family: tahoma;
+  }
+  & h1 {
+    font-weight: 300;
+  }
+}
