@@ -19,8 +19,9 @@ import {
   LOAD_REPOS,
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS_ERROR,
+  SIGNIN_SUCCESS,
 } from './constants';
-
+import APP from './constants'
 /**
  * Load the repositories, this action starts the request saga
  *
@@ -47,7 +48,28 @@ export function reposLoaded(repos, username) {
     username,
   };
 }
-
+export function fetching() {
+  return {
+    type: APP.FETCHING
+  }
+}
+export function fetchingDone() {
+  return {
+    type: APP.FETCHING_DONE
+  }
+}
+export function appSigninSuccess(user) {
+  return {
+    type: SIGNIN_SUCCESS,
+    user,
+  };
+}
+export function networkSelected(network){
+  return {
+    type: APP.NETWORK_SELECTED,
+    network
+  }
+}
 /**
  * Dispatched when loading the repositories fails
  *

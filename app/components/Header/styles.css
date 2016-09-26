@@ -1,0 +1,19 @@
+.header { /* stylelint-disable */
+  & h1{
+    padding: 0 20px;
+  }
+  & span {
+    font-size: 20px !important;
+    font-family: tahoma;
+  }
+
+}
+.menuItem {
+
+}
+.indicator {
+  position: absolute;
+  width: 100%;
+  top: 64px;
+  right: 0;
+}

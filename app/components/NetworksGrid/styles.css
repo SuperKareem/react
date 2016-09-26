@@ -1,0 +1,18 @@
+.networksGrid { /* stylelint-disable */
+  /*display: flex;*/
+  /*flex-flow: row;*/
+  /*justify-content: space-around;*/
+  /*align-items: flex-start;*/
+}
+.gridContainer{
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.itemContainer{
+  /*width: 200px;*/
+  /*height: 100px;*/
+  /*padding: 16px;*/
+}

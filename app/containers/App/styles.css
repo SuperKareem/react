@@ -1,5 +1,4 @@
 /* Global styles */
-
 html,
 body {
   height: 100%;
@@ -8,6 +7,7 @@ body {
 
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: tahoma !important;
 }
 
 body.fontLoaded {

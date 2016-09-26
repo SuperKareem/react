@@ -14,7 +14,10 @@ import {
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS,
   LOAD_REPOS_ERROR,
+  SIGNIN_SUCCESS,
+  NETWORK_SELECTED
 } from './constants';
+import APP from './constants'
 import { fromJS } from 'immutable';
 
 // The initial state of the App
@@ -22,9 +25,18 @@ const initialState = fromJS({
   loading: false,
   error: false,
   currentUser: false,
+  currentNetwork: fromJS({
+    _id: false,
+    name: false,
+    owner: false,
+    password: false,
+    username: false,
+    mikrotikIp: false
+  }),
   userData: fromJS({
     repositories: false,
   }),
+
 });
 
 function appReducer(state = initialState, action) {
@@ -43,6 +55,18 @@ function appReducer(state = initialState, action) {
       return state
         .set('error', action.error)
         .set('loading', false);
+    case SIGNIN_SUCCESS:
+      return state
+        .set('currentUser', action.user)
+    case NETWORK_SELECTED:
+        return state
+          .set('currentNetwork', action.network)
+    case APP.FETCHING:
+        return state
+          .set('loading', true)
+    case APP.FETCHING_DONE:
+        return state
+          .set('loading', false)
     default:
       return state;
   }

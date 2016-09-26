@@ -11,8 +11,8 @@ import {
 } from './constants';
 
 const initialState = fromJS({
-  username: '',
-  password: '',
+  username: 'admin',
+  password: '123',
   isLoading: false
 });
 
@@ -30,7 +30,8 @@ function signinPageReducer(state = initialState, action) {
       return state.set('isLoading', true)
       break;
     case SIGNIN.SIGNIN_SUCCESS:
-      return state.set('isLoading', false)
+      return state
+            .set('isLoading', false)
       break;
     case SIGNIN.SIGNIN_FAILED:
       return state.set('isLoading', false)

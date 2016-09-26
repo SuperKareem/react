@@ -31,16 +31,32 @@ export function passwordChange(password){
 
 export function signinRequest(){
   return {
-    type: SIGNIN.SIGNIN_REQ
+    type: SIGNIN.SIGNIN_REQ,
   }
 }
 
 export function signinSuccess(){
   return {
-    type: SIGNIN.SIGNIN_SUCCESS
+    type: SIGNIN.SIGNIN_SUCCESS,
   }
 }
 
+export function signinFailed(){
+  return {
+    type: SIGNIN.SIGNIN_FAILED
+  }
+}
+
+export function networksLoading(){
+  return {
+    type: NETWORK.SIGNIN_FAILED
+  }
+}
+export function signinFailed(){
+  return {
+    type: SIGNIN.SIGNIN_FAILED
+  }
+}
 export function signinFailed(){
   return {
     type: SIGNIN.SIGNIN_FAILED

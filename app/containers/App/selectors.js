@@ -25,6 +25,10 @@ const selectRepos = () => createSelector(
   selectGlobal(),
   (globalState) => globalState.getIn(['userData', 'repositories'])
 );
+const selectCurrentNetwork = () => createSelector(
+  selectGlobal(),
+  (globalState) => globalState.get('currentNetwork')
+)
 
 const selectLocationState = () => {
   let prevRoutingState;
@@ -49,4 +53,5 @@ export {
   selectError,
   selectRepos,
   selectLocationState,
+  selectCurrentNetwork,
 };

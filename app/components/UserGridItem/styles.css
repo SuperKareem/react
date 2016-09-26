@@ -1,0 +1,10 @@
+.userGridItem { /* stylelint-disable */
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.padding{
+  padding: 10px;
+  width: 100px;
+}

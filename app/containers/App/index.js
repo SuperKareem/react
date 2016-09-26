@@ -11,41 +11,57 @@ import Helmet from 'react-helmet';
 
 // Import the CSS reset, which HtmlWebpackPlugin transfers to the build folder
 import 'sanitize.css/sanitize.css';
-
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux'
+import { createStructuredSelector } from 'reselect'
 import Img from 'components/Img';
 import Footer from 'components/Footer';
 import Banner from './banner-metal.jpg';
 import A from 'components/A';
-
-import styles from './styles.css';
+import Header from 'components/Header'
+import { selectLoading } from './selectors'
+import classes from './styles.css'
+import classNamesBind from 'classnames/bind';
+var classNames = classNamesBind.bind(classes);
 
 import {
   MuiThemeProvider
  } from 'material-ui'
 
-function App(props) {
-  return (
-      <MuiThemeProvider>
-        <div className={styles.wrapper}>
-          <Helmet
-            titleTemplate="%s - React.js Boilerplate"
-            defaultTitle="React.js Boilerplate"
-            meta={[
-              { name: 'description', content: 'A React.js Boilerplate application' },
-            ]}
-            />
-          <A className={styles.logoWrapper} href="https://twitter.com/mxstbr">
-            <Img className={styles.logo} src={Banner} alt="react-boilerplate - Logo" />
-          </A>
-          {React.Children.toArray(props.children)}
-          <Footer />
-        </div>
-      </MuiThemeProvider>
-  );
+ export class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
+   componentDidMount(){
+   }
+
+   render(){
+     return (
+       <MuiThemeProvider>
+         <div  dir="rtl" className={classNames("container")}>
+           <div className={classNames("header")}>
+             <Header
+               push={(url)=>{
+                 this.props.dispatch(push(url))
+               }}
+               isFetching={this.props.isFetching}
+               />
+           </div>
+           <div className={classNames("wrapper")}>
+             {this.props.children}
+             <Footer />
+           </div>
+         </div>
+       </MuiThemeProvider>
+     );
+   }
+ }
+
+const mapStateToProps = createStructuredSelector({
+  isFetching: selectLoading()
+});
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
 }
 
-App.propTypes = {
-  children: React.PropTypes.node,
-};
-
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

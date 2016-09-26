@@ -15,6 +15,7 @@ import { createStructuredSelector } from 'reselect'
 import classes from './styles.css'
 import classNamesBind from 'classnames/bind';
 var classNames = classNamesBind.bind(classes);
+import { replace } from 'react-router-redux';
 import {
   usernameChange,
   passwordChange,
@@ -23,6 +24,8 @@ import {
 import Signin from 'components/Signin'
 
 export class SigninPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  componentDidMount(){
+  }
   render() {
     let {
       username,
@@ -57,8 +60,8 @@ export function mapDispatchToProps(dispatch) {
   return {
     onUsernameChange: (e) => dispatch(usernameChange(e.target.value)),
     onPasswordChange: (e) => dispatch(passwordChange(e.target.value)),
-    onSigninClick: (username, password) => console.log(username, password),
-    onChangeRoute: (url) => dispatch(push(url)),
+    onSigninClick: () => dispatch(signinRequest()),
+    onChangeRoute: (url) => dispatch(replace(url)),
     dispatch,
   };
 }
