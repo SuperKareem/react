@@ -1,6 +1,6 @@
 /**
 *
-* UserGridItem
+* ProfileGridItem
 *
 */
 
@@ -15,7 +15,7 @@ import {
   Checkbox
 } from 'material-ui'
 
-class UserGridItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class ProfileGridItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
   defaultProps = {
     checkbox: true
   }
@@ -37,7 +37,7 @@ class UserGridItem extends React.Component { // eslint-disable-line react/prefer
           {this.props.checkbox ?   <Checkbox />: null}
           </div>
           <div className={classNames("padding")}>
-            <span>{comment}</span>
+            <span>{name}</span>
           </div>
           <div className={classNames("padding")}>
             <span>{name}</span>
@@ -64,4 +64,4 @@ class UserGridItem extends React.Component { // eslint-disable-line react/prefer
 // <div className={classNames("padding")}>
 //   <span>{uptime}</span>
 // </div>
-export default UserGridItem;
+export default ProfileGridItem;

@@ -23,12 +23,15 @@ import { selectLoading } from './selectors'
 import classes from './styles.css'
 import classNamesBind from 'classnames/bind';
 var classNames = classNamesBind.bind(classes);
-
+var injectTapEventPlugin = require("react-tap-event-plugin");
 import {
   MuiThemeProvider
  } from 'material-ui'
-
  export class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
+   constructor(props){
+     super(props)
+     injectTapEventPlugin()
+   }
    componentDidMount(){
    }
 
@@ -46,7 +49,6 @@ import {
            </div>
            <div className={classNames("wrapper")}>
              {this.props.children}
-             <Footer />
            </div>
          </div>
        </MuiThemeProvider>

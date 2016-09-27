@@ -36,7 +36,7 @@ const initialState = fromJS({
   userData: fromJS({
     repositories: false,
   }),
-
+  currentProfiles: false,
 });
 
 function appReducer(state = initialState, action) {
@@ -67,6 +67,9 @@ function appReducer(state = initialState, action) {
     case APP.FETCHING_DONE:
         return state
           .set('loading', false)
+    case APP.ADD_PROFILES_TO_GLOBAL_STATE:
+      return state
+        .set('currentProfiles', action.profiles)
     default:
       return state;
   }

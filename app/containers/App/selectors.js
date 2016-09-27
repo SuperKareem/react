@@ -29,7 +29,10 @@ const selectCurrentNetwork = () => createSelector(
   selectGlobal(),
   (globalState) => globalState.get('currentNetwork')
 )
-
+const selectCurrentProfiles = () => createSelector(
+  selectGlobal(),
+  (globalState) => globalState.get('currentProfiles')
+)
 const selectLocationState = () => {
   let prevRoutingState;
   let prevRoutingStateJS;
@@ -54,4 +57,5 @@ export {
   selectRepos,
   selectLocationState,
   selectCurrentNetwork,
+  selectCurrentProfiles,
 };

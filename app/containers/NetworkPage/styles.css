@@ -4,3 +4,11 @@
 .usersGridContainer{
   padding: 25px;
 }
+.searchField {
+  background-color: rgba(255, 255, 255, 0.4);;
+  margin-top: -24px;
+  padding: 8px;
+}
+.toolbar {
+  overflow: hidden;
+}

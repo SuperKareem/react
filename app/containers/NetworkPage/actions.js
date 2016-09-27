@@ -59,3 +59,19 @@ export function addNewMikrotikUser() {
     type: MIKROTIK.ADD_NEW_MIKROTIK_USER
   }
 }
+export function addNewMikrotikUserSuccess() {
+  return {
+    type: MIKROTIK.ADD_NEW_MIKROTIK_USER_SUCCESS
+  }
+}
+export function addNewMikrotikUserFailed(error) {
+  return {
+    type: MIKROTIK.ADD_NEW_MIKROTIK_USER_FAILED,
+    error
+  }
+}
+export function addNewMikrotikUserErrorOk() {
+  return {
+    type: MIKROTIK.ADD_NEW_MIKROTIK_USER_ERROR_OK,
+  }
+}

@@ -11,7 +11,8 @@ import classNamesBind from 'classnames/bind';
 var classNames = classNamesBind.bind(classes);
 
 import {
-  Paper
+  Paper,
+
 } from 'material-ui'
 
 class NetworksGrid extends React.Component { // eslint-disable-line react/prefer-stateless-function

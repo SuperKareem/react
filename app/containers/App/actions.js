@@ -70,6 +70,12 @@ export function networkSelected(network){
     network
   }
 }
+export function addProfilesToGlobalState(profiles){
+  return {
+    type: APP.ADD_PROFILES_TO_GLOBAL_STATE,
+    profiles
+  }
+}
 /**
  * Dispatched when loading the repositories fails
  *

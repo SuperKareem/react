@@ -3,14 +3,16 @@ import { push, LOCATION_CHANGE } from 'react-router-redux'
 import {
   selectCurrentNetwork
 } from 'containers/App/selectors'
-import { fetching, fetchingDone } from 'containers/App/actions'
+import { fetching, fetchingDone, addProfilesToGlobalState } from 'containers/App/actions'
 import {
   fetchAllMikrotikUsers,
   fetchAllMikrotikUsersSuccess,
   fetchAllMikrotikUsersFailed,
   fetchAllMikrotikProfiles,
   fetchAllMikrotikProfilesSuccess,
-  fetchAllMikrotikProfilesFailed
+  fetchAllMikrotikProfilesFailed,
+  addNewMikrotikUserFailed,
+  addNewMikrotikUserSuccess,
 } from './actions'
 import { MIKROTIK } from './constants'
 import sdk from 'utils/sdk'
@@ -34,6 +36,7 @@ export function* fetchMikrotikUsers() {
 export function* fetchAllMikrotikProfilesSaga() {
   let network = yield select(selectCurrentNetwork())
   let profiles = yield call(sdk.fetchAllMikrotikProfiles, {owner: network.owner, networkId: network._id})
+  yield put(addProfilesToGlobalState(profiles.data))
   yield put(fetchAllMikrotikProfilesSuccess(profiles))
 }
 export function* addNewMikrotikUserSaga() {
@@ -46,9 +49,19 @@ export function* addNewMikrotikUserSaga() {
   })
   // NOTE:
   // TODO: checkin user adding errors and handle'em
-  yield put(fetchAllMikrotikUsers())
-  yield call(fetchMikrotikUsers)
-  yield put(fetchingDone())
+  if(res.msg === 'bad!'){
+    console.log(res.data.errors[0]);
+    let error = "";
+    res.data.errors[0].message === "failure: already have user with this name for this server" ?
+    error = "اسم المستخدم موجود بالفعل !!" : error = "bad request !!"
+    yield put(addNewMikrotikUserFailed(error))
+    yield put(fetchingDone())
+  } else {
+    yield put(addNewMikrotikUserSuccess())
+    yield put(fetchAllMikrotikUsers())
+    yield call(fetchMikrotikUsers)
+    yield put(fetchingDone())
+  }
 }
 export function* fetchAllMikrotikProfilesWatcher() {
   while (yield take(MIKROTIK.FETCH_ALL_PROFILES))

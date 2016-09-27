@@ -20,6 +20,12 @@ var _newUserForm = {
   comment: ''
 }
 const initialState = fromJS({
+  errors: {
+    addNewMikrotikUser: {
+      isExist: false,
+      error: ''
+    }
+  },
   fetching: false,
   users: false,
   newUserForm: _newUserForm,
@@ -39,6 +45,13 @@ function networkPageReducer(state = initialState, action) {
     case MIKROTIK.ADD_NEW_USER_FORM_DATA_CAHNGED:
       return state
         .set('newUserForm', {...action.user})
+    case MIKROTIK.ADD_NEW_MIKROTIK_USER_FAILED:
+      return state
+        .setIn(['errors', 'addNewMikrotikUser', 'isExist'], true)
+        .setIn(['errors', 'addNewMikrotikUser', 'error'], action.error)
+    case MIKROTIK.ADD_NEW_MIKROTIK_USER_ERROR_OK:
+      return state
+        .setIn(['errors', 'addNewMikrotikUser', 'isExist'], false)
     case MIKROTIK.FETCH_ALL_PROFILES:
       return state
         .set('fetching', true)

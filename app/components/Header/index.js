@@ -23,6 +23,10 @@ var menuItems = [
     title: 'الشبكات',
     push: '/main'
   },
+  {
+    title: "العروض",
+    push: '/profiles'
+  }
 ]
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props){

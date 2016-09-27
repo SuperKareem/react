@@ -1,6 +1,6 @@
 import fetch from 'utils/request'
 
- export function respond(res){
+ function respond(res){
   let resShape = {
     msg: '',
     data: {}
@@ -24,7 +24,7 @@ import fetch from 'utils/request'
   return resShape
 }
 
-export function* post(url, data){
+function* post(url, data){
   console.log(url);
   console.log(data);
   let res = yield fetch(url,{
