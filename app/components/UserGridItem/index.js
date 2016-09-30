@@ -34,7 +34,9 @@ class UserGridItem extends React.Component { // eslint-disable-line react/prefer
       <div className="">
         <div className={classNames("userGridItem")}>
           <div className={classNames("padding")}>
-          {this.props.checkbox ?   <Checkbox />: null}
+            <Checkbox
+              disabled={this.props.checkbox}
+              />
           </div>
           <div className={classNames("padding")}>
             <span>{comment}</span>

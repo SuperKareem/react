@@ -95,7 +95,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
                         iconClassName={classNames("fa", "fa-ellipsis-v")}
                         />
     let leftButton = <IconButton
-                        iconClassName={classNames("fa", "fa-bars")}
+                        iconClassName={classNames("fa fa-gears")}
                         onClick={() => {
                           this.toggleDrawer()
                         }}

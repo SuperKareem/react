@@ -19,34 +19,25 @@ export default function createRoutes(store) {
   return [
     {
       path: '/',
-      name: 'home',
+      name: 'signin',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/HomePage/reducer'),
-          System.import('containers/HomePage/sagas'),
-          System.import('containers/HomePage'),
+          System.import('containers/SigninPage/reducer'),
+          System.import('containers/SigninPage/sagas'),
+          System.import('containers/SigninPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([reducer, sagas, component]) => {
-          injectReducer('home', reducer.default);
+          injectReducer('signinPage', reducer.default);
           injectSagas(sagas.default);
-
           renderRoute(component);
         });
 
         importModules.catch(errorLoading);
       },
-    }, {
-      path: '/features',
-      name: 'features',
-      getComponent(nextState, cb) {
-        System.import('containers/FeaturePage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, {
+    },  {
       path: '/signin',
       name: 'signinPage',
       getComponent(nextState, cb) {

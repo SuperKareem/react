@@ -7,6 +7,7 @@ import {
   fetchMikrotikUsers,
   addNewMikrotikUser,
   fetchAllMikrotikProfiles,
+  addNewMikrottikProfile,
 } from './mikrotik'
 
 export default {
@@ -16,4 +17,5 @@ export default {
   fetchMikrotikUsers,
   addNewMikrotikUser,
   fetchAllMikrotikProfiles,
+  addNewMikrottikProfile,
 }

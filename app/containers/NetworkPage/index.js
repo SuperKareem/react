@@ -9,8 +9,8 @@ import { connect } from 'react-redux';
 import selectNetworkPage from './selectors';
 import classes from './styles.css'
 import classNamesBind from 'classnames/bind';
-import NewNetworkForm from 'components/NewNetworkForm'
 var classNames = classNamesBind.bind(classes);
+import NewNetworkForm from 'components/NewNetworkForm'
 import UserGridItem from 'components/UserGridItem'
 import CreateNewForm from 'components/CreateNewForm'
 import {
@@ -80,6 +80,7 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
           return (
             <UserGridItem
               key={index}
+              checkbox={false}
               name={user.name}
               password={user.password}
               profile={user.profile}
@@ -93,6 +94,7 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
         return (
           <UserGridItem
             key={index}
+            checkbox={false}
             name={user.name}
             password={user.password}
             profile={user.profile}
@@ -136,7 +138,7 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
       <DropDownMenu
         value={this.props.newUserForm.profile}
         >
-          {profiles.data.map((profile, index)=>{
+          {!!profiles.data && profiles.data.length > 0 ? profiles.data.map((profile, index)=>{
             return(
                 <FlatButton
                   key={index}
@@ -147,7 +149,7 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
                 }}
                 />
             )
-          })}
+          }): null}
       </DropDownMenu>
     )
   }
@@ -180,6 +182,7 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
           title="Dialog With Actions"
           actions={actions}
           modal={false}
+          autoScrollBodyContent={true}
           open={this.state.addNewUserDialogOpened}
         >
           {!fetching && !!profiles.data ?
@@ -229,7 +232,7 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
         <Paper>
           <div className={classNames("usersGridContainer")}>
             <UserGridItem
-              checkbox={false}
+              checkbox={true}
               name="اسم المستخدم"
               password={"كلمة السر"}
               profile="العرض"

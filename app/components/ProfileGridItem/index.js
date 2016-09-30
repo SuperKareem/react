@@ -22,37 +22,43 @@ class ProfileGridItem extends React.Component { // eslint-disable-line react/pre
   render() {
     let {
       name,
-      password,
-      profile,
+      downloadSpeed,
+      downloadLimit,
       disabled,
       uptime,
-      bytesIn,
-      bytesOut,
-      comment
+      uploadLimit,
+      offerLifetime,
+      uploadSpeed,
+      offerPrice
     } = this.props
     return (
       <div className="">
-        <div className={classNames("userGridItem")}>
+        <div className={classNames("profileGridItem")}>
           <div className={classNames("padding")}>
-          {this.props.checkbox ?   <Checkbox />: null}
+            <Checkbox
+              disabled={this.props.checkbox}
+              />
           </div>
           <div className={classNames("padding")}>
             <span>{name}</span>
           </div>
           <div className={classNames("padding")}>
-            <span>{name}</span>
+            <span>{downloadSpeed}</span>
           </div>
           <div className={classNames("padding")}>
-            <span>{password}</span>
+            <span>{uploadSpeed}</span>
           </div>
           <div className={classNames("padding")}>
-            <span>{profile}</span>
+            <span>{downloadLimit}</span>
           </div>
           <div className={classNames("padding")}>
-            <span>{bytesIn}</span>
+            <span>{uploadLimit}</span>
           </div>
           <div className={classNames("padding")}>
-            <span>{bytesOut}</span>
+            <span>{offerLifetime}</span>
+          </div>
+          <div className={classNames("padding")}>
+            <span>{offerPrice}</span>
           </div>
         </div>
         <hr />

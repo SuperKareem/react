@@ -5,13 +5,14 @@ import {
   selectCurrentNetwork
  } from 'containers/App/selectors'
 import APP  from 'containers/App/constants'
-import {fetching, fetchingDone} from 'containers/App/actions'
+import {fetching, fetchingDone, networkSelected} from 'containers/App/actions'
 
 import sdk from 'utils/sdk'
 import {
   fetchUserNetwork,
   networksFetchingSuccess,
-  networksFetchingFailed
+  networksFetchingFailed,
+
  } from './actions'
 import { NETWORKS } from './constants'
 import { selectNetworkForm } from './selectors'
@@ -27,6 +28,7 @@ export function* loadNetowrks(){
   let nets = yield call(sdk.getAllUserNetworks, {owner: owner._id})
   yield put(networksFetchingSuccess(nets))
   yield put(fetchingDone())
+  !!nets.data && nets.data.length > 0 ? yield put(networkSelected(nets.data[0])) : null
 }
 export function* addNewNetwork() {
   yield put(fetching())

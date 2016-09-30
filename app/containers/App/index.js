@@ -14,14 +14,12 @@ import 'sanitize.css/sanitize.css';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { createStructuredSelector } from 'reselect'
-import Img from 'components/Img';
-import Footer from 'components/Footer';
 import Banner from './banner-metal.jpg';
-import A from 'components/A';
-import Header from 'components/Header'
 import { selectLoading } from './selectors'
 import classes from './styles.css'
 import classNamesBind from 'classnames/bind';
+import Header from 'components/Header'
+
 var classNames = classNamesBind.bind(classes);
 var injectTapEventPlugin = require("react-tap-event-plugin");
 import {

@@ -8,7 +8,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect'
 import { push } from 'react-router-redux';
-import LoadingIndicator from 'components/LoadingIndicator';
 import NetworksGrid from 'components/NetworksGrid';
 import selectMainPage from './selectors';
 import classes from './styles.css'

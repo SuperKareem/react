@@ -13,3 +13,14 @@ export function defaultAction() {
     type: DEFAULT_ACTION,
   };
 }
+export function addNewProfileFormData(profile) {
+  return {
+    type: DEFAULT_ACTION.ADD_NEW_PROFILE_FORM_DATA_CAHNGED,
+    profile
+  }
+}
+export function addNewProfile(){
+  return {
+    type: DEFAULT_ACTION.ADD_NEW_PROFILE
+  }
+}

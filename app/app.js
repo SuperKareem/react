@@ -26,8 +26,6 @@ import { useScroll } from 'react-router-scroll';
 import configureStore from './store';
 
 // Import Language Provider
-import LanguageProvider from 'containers/LanguageProvider';
-
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
 import styles from 'containers/App/styles.css';
@@ -78,7 +76,6 @@ const rootRoute = {
 const render = (messages) => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
         <Router
           history={history}
           routes={rootRoute}
@@ -88,7 +85,6 @@ const render = (messages) => {
             applyRouterMiddleware(useScroll())
           }
         />
-      </LanguageProvider>
     </Provider>,
     document.getElementById('app')
   );
