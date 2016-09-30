@@ -118,6 +118,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/serials',
+      name: 'serialsPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/SerialsPage/reducer'),
+          System.import('containers/SerialsPage/sagas'),
+          System.import('containers/SerialsPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('serialsPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
