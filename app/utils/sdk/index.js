@@ -8,6 +8,8 @@ import {
   addNewMikrotikUser,
   fetchAllMikrotikProfiles,
   addNewMikrottikProfile,
+  deleteMikrotikUsers,
+  editMikrotikUser,
 } from './mikrotik'
 
 export default {
@@ -18,4 +20,6 @@ export default {
   addNewMikrotikUser,
   fetchAllMikrotikProfiles,
   addNewMikrottikProfile,
+  deleteMikrotikUsers,
+  editMikrotikUser,
 }

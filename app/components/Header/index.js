@@ -15,13 +15,14 @@ import {
   Drawer,
   MenuItem,
   FlatButton,
-  LinearProgress
+  LinearProgress,
+  RaisedButton
 } from 'material-ui'
 import { push } from 'react-router-redux'
 var menuItems = [
   {
-    title: 'الشبكات',
-    push: '/main'
+    title: 'مستخدمين',
+    push: '/network'
   },
   {
     title: "العروض",
@@ -42,11 +43,13 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   }
   renderDrawer(){
     let leftButton = <IconButton
-                        iconClassName={classNames("fa", "fa-bars")}
+                        iconClassName={classNames("fa")}
                         onClick={() => {
                           this.toggleDrawer()
                         }}
-                        />
+                        >
+                        <i className={classNames("fa","fa-bars")}></i>
+                      </IconButton>
     return(
       <Drawer
         open={this.state.drawerDocked}
@@ -58,6 +61,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
         >
         <div className={classNames("menuContainer")}>
           <AppBar
+            title="MicroNet"
             iconElementLeft={leftButton}
             >
           </AppBar>
@@ -92,35 +96,26 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   }
   render() {
     let rightButton = <IconButton
-                        iconClassName={classNames("fa", "fa-ellipsis-v")}
+
                         />
     let leftButton = <IconButton
-                        iconClassName={classNames("fa fa-gears")}
+                        iconClassName={classNames("fa")}
                         onClick={() => {
                           this.toggleDrawer()
                         }}
-                        />
-                      // <AppBar
-                      //   title="MikroTik System "
-                      //   iconElementRight={rightButton}
-                      //   iconElementLeft={leftButton}
-                      //   onLeftIconButtonTouchTap={()=>{
-                      //     this.toggleDrawer()
-                      //   }}
-                      //   showMenuIconButton={false}
-                      //   >
-                      // </AppBar> <br />
+                        >
+                        <i className={classNames("fa","fa-bars")}></i>
+                      </IconButton>
     return (
       <div className={classNames("header")}>
         <AppBar
               className={classNames("appBar")}
               showMenuIconButton={true}
               iconElementLeft={leftButton}
-              title="Micro Net System">
+              title="MicroNet">
             </AppBar>
           {this.renderLoadIndicator()}
         {this.renderDrawer()}
-        <br />
       </div>
     );
   }

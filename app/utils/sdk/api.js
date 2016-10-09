@@ -24,11 +24,11 @@ import fetch from 'utils/request'
   return resShape
 }
 
-function* post(url, data){
+function* post(url, data, type = 'post'){
   console.log(url);
   console.log(data);
   let res = yield fetch(url,{
-    method: 'post',
+    method: type,
     headers:  {
       'Accept': 'application/json',
       'Content-Type': 'application/json'

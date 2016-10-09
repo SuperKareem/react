@@ -12,7 +12,30 @@ hr {
   border-color: rgba(0, 0, 0, 0.1) !important;
 }
 .padding{
-  padding: 10px 0px;
+  padding: 10px 0;
   width: 150px;
   max-width: 150px;
+  display: inline-flex;
+  & span {
+    margin-top: 10px;
+  }
+}
+.userGridItemHover{
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.userData{
+  display: flex;
+  flex-flow: row;
+  flex-wrap: nowrap;
+}
+.online {
+  background-color: rgba(29,233,182 ,0.15);
+}
+.disabled {
+  background-color: rgba(158,158,158 ,0.3);
+}
+.dropDown{
+  width: 100%;
+  display: flex;
+  flex-flow: column;
 }

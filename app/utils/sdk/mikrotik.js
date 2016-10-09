@@ -10,7 +10,14 @@ export function* addNewMikrotikUser(data = {comment, username, password, profile
   let url = uri.mikrotik.users.add;
   return yield api.post(url, data)
 }
-
+export function* deleteMikrotikUsers(data){
+  let url = uri.mikrotik.users.delete;
+  return yield api.post(url, data, 'delete');
+}
+export function* editMikrotikUser(data){
+  let url = uri.mikrotik.users.update;
+  return yield api.post(url, data, 'put');
+}
 export function* fetchAllMikrotikProfiles(data = {owner, networkId}) {
   let url = uri.mikrotik.profiles.get;
   return yield api.post(url, data)

@@ -75,3 +75,25 @@ export function addNewMikrotikUserErrorOk() {
     type: MIKROTIK.ADD_NEW_MIKROTIK_USER_ERROR_OK,
   }
 }
+export function selectedUsersChanged(user){
+  return{
+    type: MIKROTIK.USER_SELECTION_CHANGED,
+    user
+  }
+}
+export function deleteSelectedUsers() {
+  return{
+    type: MIKROTIK.DELETE_SELECTED_USERS
+  }
+}
+export function onUserToEditDataChanged(changedData) {
+  return {
+    type: MIKROTIK.ON_USER_DATA_CHANGED,
+    changedData: changedData
+  }
+}
+export function editUserData() {
+  return {
+    type: MIKROTIK.EDIT_USER_DATA,
+  }
+}

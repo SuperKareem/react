@@ -49,11 +49,8 @@ export function* addNewMikrotikUserSaga() {
   })
   // NOTE:
   // TODO: checkin user adding errors and handle'em
-  if(res.msg === 'bad!'){
-    console.log(res.data.errors[0]);
-    let error = "";
-    res.data.errors[0].message === "failure: already have user with this name for this server" ?
-    error = "اسم المستخدم موجود بالفعل !!" : error = "bad request !!"
+  if(res.msg === 'error inserting in mikrotik server'){
+    let error = "اسم المستخدم موجود بالفعل !!"
     yield put(addNewMikrotikUserFailed(error))
     yield put(fetchingDone())
   } else {
@@ -62,6 +59,24 @@ export function* addNewMikrotikUserSaga() {
     yield call(fetchMikrotikUsers)
     yield put(fetchingDone())
   }
+}
+export function* deleteSelectedUsersSaga(){
+  yield put(fetching())
+  let {selectedUsers} = yield select(networkPageState())
+  let network = yield select(selectCurrentNetwork())
+  let res = yield call(sdk.deleteMikrotikUsers, {user: selectedUsers, owner: network.owner, networkId: network._id})
+  yield put(fetchingDone())
+  yield put(fetching())
+  yield call(fetchMikrotikUsers)
+  yield put(fetchingDone())
+}
+export function* editUserDataSaga() {
+  yield put(fetching())
+  let {selectedUsers, editUserData} = yield select(networkPageState())
+  let {owner, _id} = yield select(selectCurrentNetwork())
+  let res = yield call(sdk.editMikrotikUser, {selectedUsers, editUserData, owner, ...{networkId: _id}})
+  yield call(fetchMikrotikUsers)
+  yield put(fetchingDone())
 }
 export function* fetchAllMikrotikProfilesWatcher() {
   while (yield take(MIKROTIK.FETCH_ALL_PROFILES))
@@ -72,15 +87,27 @@ export function* addNewMikrotikUserWatcher() {
   while(yield take(MIKROTIK.ADD_NEW_MIKROTIK_USER))
     yield call(addNewMikrotikUserSaga)
 }
+export function* deletedSeletedUsersWathcer(){
+  while(yield take(MIKROTIK.DELETE_SELECTED_USERS))
+    yield call(deleteSelectedUsersSaga)
+}
+export function* editUserDataWatcher(){
+  while(yield take(MIKROTIK.EDIT_USER_DATA))
+    yield call(editUserDataSaga)
+}
 // Individual exports for testing
 export function* NetWorkPageSaga() {
   const fetchAllMikrotikProfilesSagaWatcher = yield fork(fetchAllMikrotikProfilesWatcher)
   const addNewMikrotikUserSagaWatcher = yield fork(addNewMikrotikUserWatcher)
+  const deleteSelectedUsersSagaWatcher = yield fork(deletedSeletedUsersWathcer)
+  const editUserDataSagaWatcher = yield fork(editUserDataWatcher)
   yield call(redirect)
   yield call(fetchMikrotikUsers)
   yield take(LOCATION_CHANGE)
   yield cancel(fetchAllMikrotikProfilesSagaWatcher)
+  yield cancel(deleteSelectedUsersSagaWatcher)
   yield cancel(addNewMikrotikUserSagaWatcher)
+  yield cancel(editUserDataSagaWatcher)
   return;
 }
 

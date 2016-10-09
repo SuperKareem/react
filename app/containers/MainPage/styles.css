@@ -4,3 +4,6 @@
 .networkItem{
   display: inline-flex;
 }
+html{
+  font-family: tahoma !important
+}

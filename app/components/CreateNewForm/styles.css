@@ -1,3 +1,13 @@
 .createNewForm { /* stylelint-disable */
-
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  & div {
+    padding-left: 20px;
+    width: 50%;
+  }
+}
+.fullWidth{
+  display: block;
+  width: 100% !important;
 }

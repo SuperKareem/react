@@ -17,7 +17,8 @@ var _newUserForm = {
   profile: '',
   email: '',
   disabled: false,
-  comment: ''
+  comment: '',
+  accountType: 'default'
 }
 const initialState = fromJS({
   errors: {
@@ -29,7 +30,9 @@ const initialState = fromJS({
   fetching: false,
   users: false,
   newUserForm: _newUserForm,
-  profiles: false
+  profiles: false,
+  selectedUsers: false,
+  editUserData: false,
 });
 
 function networkPageReducer(state = initialState, action) {
@@ -64,6 +67,12 @@ function networkPageReducer(state = initialState, action) {
         return state
           .set('profiles', action.profiles)
           .set('fetching', false)
+    case MIKROTIK.USER_SELECTION_CHANGED:
+      return state
+        .set('selectedUsers', action.user)
+    case MIKROTIK.ON_USER_DATA_CHANGED:
+      return state
+        .set('editUserData', action.changedData)
     default:
       return state;
   }

@@ -2,7 +2,7 @@
 
 }
 .usersGridContainer{
-  padding: 25px;
+  padding: 8px;
 }
 .searchField {
   background-color: rgba(255, 255, 255, 0.4);;
@@ -11,4 +11,31 @@
 }
 .toolbar {
   overflow: hidden;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+.profileDropDown{
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row-reverse;
+  color: rgb(0, 188, 212);
+  font-weight: 100;
+  font-family: tahoma;
+}
+.dropDowns{
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-around;
+}
+.formContainer {
+  width: 80%;
+  margin: 0 auto;
+}
+.usersTableBody {
+  max-height: 70vh;
+  overflow-y: scroll;
+}
+.dropdownClass{
+  display: flex;
+  flex-flow: column;
 }
