@@ -1,0 +1,78 @@
+.mikrotikUserPage { /* stylelint-disable */
+
+}
+.toolbarBalance {
+  padding: 0 16px;
+  color: white;
+}
+.pageContainer {
+  padding: 16px;
+  max-height: 78vh;
+  overflow-y: scroll;
+}
+.support{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  & h3 {
+    margin: 0;
+    color: #d50000;
+  }
+  & h4 {
+    margin: 0;
+  }
+}
+.logo {
+  padding: 2px;
+}
+.logoImg {
+  height: 90px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.copy{
+  text-align: center;
+}
+.socialMenu {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.google,
+.facebook,
+.youtube,
+.yallakora,
+.masry,
+.youm7,
+.akhbrak{
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 150px;
+  height: 150px;
+  background-size: contain;
+}
+
+.google{
+  background-image: url('https://www.wired.com/wp-content/uploads/2015/09/2010.jpg');
+}
+.facebook{
+  background-image: url('http://www.clipartbest.com/cliparts/RTd/x7E/RTdx7E8T9.jpeg');
+}
+.youtube{
+  background-image: url('http://www.logospike.com/wp-content/uploads/2014/11/Youtube_logo-4.png');
+}
+.yallakora{
+  background-image: url('http://4.bp.blogspot.com/-IQJxSoAnSUU/T8y1HpWPlvI/AAAAAAAAABc/6R2V44apDyw/s1600/418125_314925308561125_168233543230303_831552_1045322587_n.jpg');
+}
+.masry{
+  background-image: url('http://clickfunding.org/uploads/PartnersLogo/Al%20Masry%20Al%20Youm.png');
+}
+.youm7{
+  background-image: url('http://egyptcsrforum.com/images/demo/partners/youm7.png');
+}
+.akhbrak{
+  background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/disp/d001f48464647.560bde3b92ecd.png');
+}

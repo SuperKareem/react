@@ -1,0 +1,35 @@
+
+.row{
+  display: flex;
+  justify-content: space-between;
+}
+.mainColor{
+  color: #9C27B0
+}
+.secColor {
+  color: #b71c1c
+}
+
+.infoContainer{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  & span {
+    font-weight: normal;
+    font-size: 17px;
+  }
+}
+.info, .downloadCircle {
+  width: 100%;
+  padding: 40px;
+
+}
+.downloadCircle{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  & span {
+    padding: 16px;
+  }
+}

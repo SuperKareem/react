@@ -1,0 +1,23 @@
+.logsWrapper, .pageWrapper{
+  padding: 16px;
+}
+.pageWrapper{
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+.log{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;;
+}
+.mainColor {
+  color: #0097A7;
+}
+.secColor {
+  color: #C51162;
+}
+.mikorLogWrapper{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;;
+}

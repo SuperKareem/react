@@ -1,0 +1,48 @@
+.userGridItem { /* stylelint-disable */
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+  & span{
+    font-weight: bold;
+    font-size: 15px !important;
+  }
+}
+hr {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+.padding{
+  padding: 10px 0;
+  width: 200px;
+  max-width: 200px;
+  display: inline-flex;
+  & span {
+    margin-top: 10px;
+  }
+}
+.index{
+  padding: 10px;
+  & span {
+    margin-top: 10px;
+  }
+}
+.userGridItemHover{
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.userData{
+  display: flex;
+  flex-flow: row;
+  flex-wrap: nowrap;
+}
+.online {
+  background-color: rgba(29,233,182 ,0.15);
+}
+.disabled {
+  background-color: rgba(158,158,158 ,0.3);
+}
+.dropDown{
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+}

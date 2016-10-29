@@ -1,4 +1,8 @@
 /* Global styles */
+@font-face {
+  font-family: noto;
+  src: url('./NotoKufiArabic-Regular.ttf');
+}
 html,
 body {
   height: 100%;
@@ -6,14 +10,37 @@ body {
 }
 
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-family: tahoma !important;
+  font-family: noto, tahoma 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  & span {
+    font-weight: bolder;
+  }
 }
 
 body.fontLoaded {
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: noto, 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-
+span {
+  font-family: noto, tahoma;
+  font-weight: bolder;
+  font-size: 20px;
+}
+label {
+  font-family: noto, tahoma;
+  font-weight: bold;
+}
+h3{
+  font-family: noto, tahoma;
+}
+h4 {
+  font-family: noto, tahoma;
+}
+h1, h2, h3, h4, h5, h6, span, label, div{font-family: noto, tahoma !important;}
+.container{
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
 :global(#app) {
   background-color: #FAFAFA;
   min-height: 100%;
@@ -21,14 +48,16 @@ body.fontLoaded {
 }
 
 .wrapper {
-  max-width: calc(900px + 16px * 2);
+  max-width: 90%;
   margin: 0 auto;
   display: flex;
   min-height: 100%;
   padding: 0 16px;
   flex-direction: column;
 }
-
+.wrapperPaper{
+  min-width: 100%;
+}
 .logoWrapper {
   padding: 2em 0;
 }

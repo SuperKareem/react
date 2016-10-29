@@ -12,7 +12,7 @@ import NewNetworkForm from 'components/NewNetworkForm'
 var classNames = classNamesBind.bind(classes);
 
 import {
-  Checkbox
+  Checkbox, IconMenu, RaisedButton, FlatButton
 } from 'material-ui'
 
 class ProfileGridItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -31,22 +31,30 @@ class ProfileGridItem extends React.Component { // eslint-disable-line react/pre
       uploadSpeed,
       offerPrice
     } = this.props
+    let iconBtn = <RaisedButton
+      primary={true}
+      disabled={this.props.checkbox}
+      label="خيارات">
+    </RaisedButton>
     return (
       <div className="">
         <div className={classNames("profileGridItem")}>
-          <div className={classNames("padding")}>
-            <Checkbox
-              disabled={this.props.checkbox}
-              />
-          </div>
+          {!! this.props.showDots ? <div className={classNames("index")}>
+            <IconMenu
+              iconButtonElement={iconBtn}
+              >
+              <div className={classNames("dropDown")}>
+                <FlatButton secondary={true} label="حذف" onClick={() => {
+                  this.props.onDeleteClick();
+                }} />
+              </div>
+            </IconMenu>
+          </div> : null}
           <div className={classNames("padding")}>
             <span>{name}</span>
           </div>
           <div className={classNames("padding")}>
-            <span>{downloadSpeed}</span>
-          </div>
-          <div className={classNames("padding")}>
-            <span>{uploadSpeed}</span>
+            <span>{downloadSpeed} {!! uploadSpeed ? `/ ${uploadSpeed}` : null}</span>
           </div>
           <div className={classNames("padding")}>
             <span>{downloadLimit}</span>

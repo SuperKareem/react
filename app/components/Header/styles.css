@@ -1,10 +1,10 @@
 .header { /* stylelint-disable */
+  margin-bottom: 10px;
   & h1{
     padding: 0 20px;
   }
   & span {
-    font-size: 20px !important;
-    font-family: tahoma;
+    font-size: 16px !important;
   }
 
 }
@@ -14,6 +14,6 @@
 .indicator {
   position: absolute;
   width: 100%;
-  top: 64px;
+  top: 58px;
   right: 0;
 }

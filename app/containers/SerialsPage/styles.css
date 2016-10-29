@@ -1,3 +1,30 @@
 .serialsPage { /* stylelint-disable */
 
 }
+
+.searchField {
+  background-color: rgba(255, 255, 255, 0.4);;
+  margin-top: -24px;
+  padding: 8px;
+}
+.toolbar {
+  overflow: hidden;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+.serialsGridContainer{
+  max-height: 66vh;
+  overflow-y: scroll;
+}
+.row{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;;
+  padding: 20px;
+}
+.pagingContainer {
+  display: flex;
+  flex-flow: row-reverse;
+  justify-content: space-between;
+  padding: 10px;
+}

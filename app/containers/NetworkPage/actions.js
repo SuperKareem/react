@@ -97,3 +97,19 @@ export function editUserData() {
     type: MIKROTIK.EDIT_USER_DATA,
   }
 }
+export function fetchMikrotikUsersIntervalFun() {
+  return {
+    type: MIKROTIK.FETCH_ALL_MIKROTIK_USERS
+  }
+}
+export function renewProfileSelected(profile) {
+  return {
+    type: MIKROTIK.RENEW_PROFILE_SELECTED,
+    profile
+  }
+}
+export function renewProfile() {
+  return {
+    type: MIKROTIK.RENEW_PROFILE
+  }
+}

@@ -78,8 +78,20 @@ export function* editUserDataSaga() {
   yield call(fetchMikrotikUsers)
   yield put(fetchingDone())
 }
+export function* renewProfileSaga() {
+  yield put(fetching())
+  let {selectedUsers, selectedProfile} = yield select(networkPageState())
+  let {owner} = yield select(selectCurrentNetwork())
+  let res = yield call(sdk.users.profileSubscribe, {offerName: selectedProfile.name, userId: selectedUsers._id, owner: owner})
+  if(res.msg == "balance not enough"){
+    let error = "رصيد العميل لا يكفى للتجديد"
+    yield put(addNewMikrotikUserFailed(error))
+    yield put(fetchingDone())
+  }
+  yield call(fetchMikrotikUsers)
+}
 export function* fetchAllMikrotikProfilesWatcher() {
-  while (yield take(MIKROTIK.FETCH_ALL_PROFILES))
+  while (yield take(MIKROTIK.FETCH_ALL_PROFILES) || take(MIKROTIK.USER_SELECTION_CHANGED))
     yield call(fetchAllMikrotikProfilesSaga)
 }
 
@@ -95,12 +107,22 @@ export function* editUserDataWatcher(){
   while(yield take(MIKROTIK.EDIT_USER_DATA))
     yield call(editUserDataSaga)
 }
+export function* mikrotikUserSelectionChangedWatcher() {
+  while(yield take(MIKROTIK.USER_SELECTION_CHANGED))
+    yield call(fetchAllMikrotikProfilesSaga)
+}
+export function* renewProfileWatcher() {
+  while(yield take(MIKROTIK.RENEW_PROFILE))
+    yield call(renewProfileSaga)
+}
 // Individual exports for testing
 export function* NetWorkPageSaga() {
   const fetchAllMikrotikProfilesSagaWatcher = yield fork(fetchAllMikrotikProfilesWatcher)
   const addNewMikrotikUserSagaWatcher = yield fork(addNewMikrotikUserWatcher)
   const deleteSelectedUsersSagaWatcher = yield fork(deletedSeletedUsersWathcer)
   const editUserDataSagaWatcher = yield fork(editUserDataWatcher)
+  const mikrotikUserSelectionChangedSagaWatcher = yield fork(mikrotikUserSelectionChangedWatcher)
+  const renewProfileSagaWatcher = yield fork(renewProfileWatcher)
   yield call(redirect)
   yield call(fetchMikrotikUsers)
   yield take(LOCATION_CHANGE)
@@ -108,6 +130,9 @@ export function* NetWorkPageSaga() {
   yield cancel(deleteSelectedUsersSagaWatcher)
   yield cancel(addNewMikrotikUserSagaWatcher)
   yield cancel(editUserDataSagaWatcher)
+  yield cancel(mikrotikUserSelectionChangedSagaWatcher)
+  yield cancel(renewProfileSagaWatcher)
+  // yield cancel(fetchAllMikrotikUserSagaWatcher)
   return;
 }
 

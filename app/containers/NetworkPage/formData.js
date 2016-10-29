@@ -30,16 +30,25 @@ var newUserFormData =  [
 ]
 var editUserFromData = [
   {
-    name: 'comment',
-    title: 'الأسم'
-  },
-  {
     name: 'name',
     title: 'اسم المستخدم'
   },
   {
     name: 'password',
     title: 'كلمة السر'
+  },
+  {
+    name: 'comment',
+    title: 'الأسم'
+  },
+  {
+    name: 'offerEndDate',
+    date: true,
+    title: 'تاريخ الإنتهاء'
+  },
+  {
+    name: 'balance',
+    title: 'الرصيد'
   },
   {
     name: 'email',
@@ -50,24 +59,31 @@ var editUserFromData = [
     title: 'ماك'
   },
   {
-    name: 'balance',
-    title: 'الرصيد'
-  },
-  {
     name: 'mobile',
     title: 'رقم الموبايل'
   },
   {
-    name: 'uptime',
-    title: 'Up Time'
-  },
-  {
     name: 'bytes-in',
+    disabled: true,
     title: 'Download'
   },
   {
     name: 'bytes-out',
+    disabled: true,
     title: 'Upload'
+  },
+  {
+    name: 'limit-bytes-in',
+    title: 'كوتة التحميل'
+  },
+  {
+    name: 'limit-bytes-out',
+    title: 'كوتة الرفع'
+  },
+  {
+    name: 'uptime',
+    disabled: true,
+    title: 'Up Time'
   },
 ]
 

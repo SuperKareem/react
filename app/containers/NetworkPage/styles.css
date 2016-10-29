@@ -1,8 +1,12 @@
 .networkPage { /* stylelint-disable */
-
+  span {
+    font-family: tahoma;
+    font-weight: bolder;
+    font-size: 25px;
+  }
 }
 .usersGridContainer{
-  padding: 8px;
+  padding: 8px 8px;
 }
 .searchField {
   background-color: rgba(255, 255, 255, 0.4);;
@@ -32,10 +36,21 @@
   margin: 0 auto;
 }
 .usersTableBody {
-  max-height: 70vh;
+  max-height: 65vh;
   overflow-y: scroll;
 }
 .dropdownClass{
   display: flex;
   flex-flow: column;
+}
+
+.offerChoosing{
+  display: flex;
+  flex-flow: row;
+}
+.pagingContainer {
+  display: flex;
+  flex-flow: row-reverse;
+  justify-content: space-between;
+  padding: 10px;
 }

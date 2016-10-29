@@ -1,0 +1,51 @@
+.profilesGrid { /* stylelint-disable */
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+  & span{
+    font-weight: bold;
+    font-size: 15px !important;
+  }
+}
+.profileWrapper {
+  margin-bottom: 60px;
+  padding: 16px;
+  width: 320px;
+  max-width: 320px;
+  height:  200px;
+  max-height:  200px;
+}
+.profileDetials{
+  width: 100%;
+  height: 100%;
+  padding: 8px 16px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.priceHolder {
+  display: flex;
+  padding: 8px;
+  justify-content: flex-end;
+}
+.price {
+  & span {
+    padding: 8px;
+    font-size: 25px;
+  }
+}
+.profileDetials {
+  display: flex;
+  flex-flow: column;
+}
+.row{
+  display: flex;
+  justify-content: space-between;
+}
+.mainColor{
+  color: #9C27B0
+}
+.secColor {
+  color: #b71c1c
+}

@@ -19,7 +19,47 @@ export default function createRoutes(store) {
   return [
     {
       path: '/',
-      name: 'signin',
+      name: 'userSignIn',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/UserSignIn/reducer'),
+          System.import('containers/UserSignIn/sagas'),
+          System.import('containers/UserSignIn'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('userSignIn', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/login',
+      name: 'userSignIn',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/UserSignIn/reducer'),
+          System.import('containers/UserSignIn/sagas'),
+          System.import('containers/UserSignIn'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('userSignIn', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/signin',
+      name: 'signinPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           System.import('containers/SigninPage/reducer'),
@@ -38,19 +78,39 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     },  {
-      path: '/signin',
-      name: 'signinPage',
+      path: '/user',
+      name: 'mikrotikUserPage',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/SigninPage/reducer'),
-          System.import('containers/SigninPage/sagas'),
-          System.import('containers/SigninPage'),
+          System.import('containers/MikrotikUserPage/reducer'),
+          System.import('containers/MikrotikUserPage/sagas'),
+          System.import('containers/MikrotikUserPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
         importModules.then(([reducer, sagas, component]) => {
-          injectReducer('signinPage', reducer.default);
+          injectReducer('mikrotikUserPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    },  {
+      path: '/logs',
+      name: 'logs',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/Logs/reducer'),
+          System.import('containers/Logs/sagas'),
+          System.import('containers/Logs'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('logs', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });

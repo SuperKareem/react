@@ -23,11 +23,18 @@ import {
   CircularProgress,
   TextField,
   DropDownMenu,
-  MenuItem
+  MenuItem, Popover
 } from 'material-ui'
 import ProfileGridItem  from 'components/ProfileGridItem'
 import CreateNewForm  from 'components/CreateNewForm'
-import { addNewProfileFormData, addNewProfile } from './actions'
+import DialogComponent  from 'components/DialogComponent'
+
+import {
+  addNewProfileFormData,
+  addNewProfile,
+  selectProfile,
+  deleteProfile,
+} from './actions'
 
 var newProfileFormFiedls = [
   {
@@ -35,29 +42,30 @@ var newProfileFormFiedls = [
     title: 'أسم العرض'
   },
   {
-    name: 'uploadSpeed',
-    title: 'سرعة الابلود'
+    name: 'offerPrice',
+    title: 'سعر العرض'
   },
   {
     name: 'downloadSpeed',
-    title: 'سرعة الداونلود'
+    title: 'سرعة التحميل'
   },
   {
-    name: 'uploadLimit',
-    title: 'داونلود'
+    name: 'uploadSpeed',
+    title: 'سرعة الرفع (التحميل / 4)'
   },
   {
     name: 'downloadLimit',
-    title: 'ابلود'
+    title: 'التحميل (جيجا)'
+  },
+  {
+    name: 'uploadLimit',
+    title: 'الرفع (جيجا)'
   },
   {
     name: 'offerLifetime',
     title: 'مدة العرض'
   },
-  {
-    name: 'offerPrice',
-    title: 'سعر العرض'
-  },
+
 ]
 
 
@@ -66,16 +74,55 @@ export class ProfilesContainer extends React.Component { // eslint-disable-line 
   constructor(props){
     super(props)
     this.state = {
-      newOfferDialogOpend: false
+      newOfferDialogOpend: false,
+      deleteProfileOpen: false,
+      limitEndOffer: 'اختر العرض',
+      profileMenuOpen: false,
     }
   }
 
   toggleAddNewOfferDialog(){
     this.setState({
+      limitEndOffer: 'اختر العرض',
       newOfferDialogOpend: !this.state.newOfferDialogOpend
     })
   }
-
+  renderProfilesDropDownMenu(onProfileSelected){
+    let {currentProfiles} = this.props;
+    return(
+      <div className={classNames("limitEndOffer")} style={{padding: 20}}>
+        <h4>عرض انتهاء الداونلود</h4>
+        <RaisedButton
+          secondary={true}
+          onClick={event => this.setState({profileMenuOpen: true, anchorEl: event.currentTarget})}
+          label={this.state.limitEndOffer}
+          />
+           <Popover
+            open={this.state.profileMenuOpen}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={()=> this.setState({profileMenuOpen: false})}
+            >
+            <div className={classNames("dropdownClass")}>
+              {!!currentProfiles && currentProfiles.length > 0 ? currentProfiles.map((profile, index)=>{
+                return(
+                  <FlatButton
+                    key={index}
+                    secondary={true}
+                    label={profile.name}
+                    onClick={()=>{
+                      this.props.onNewProfileFormDataChanged({...this.props.newProfileFormData, ...{limitEndOffer: profile.name}})
+                      this.setState({limitEndOffer: profile.name, profileMenuOpen: false})
+                    }}
+                    />
+                )
+              }): null}
+            </div>
+          </Popover>
+      </div>
+    )
+  }
     renderAddNewProfile(){
       const actions = [
         <FlatButton
@@ -85,10 +132,9 @@ export class ProfilesContainer extends React.Component { // eslint-disable-line 
             this.toggleAddNewOfferDialog()
           }}
         />,
-        <FlatButton
+      <RaisedButton
           label="إضافة"
           primary={true}
-          keyboardFocused={true}
           onClick={() => {
             this.props.onAddNewProfile()
             this.toggleAddNewOfferDialog()
@@ -99,7 +145,10 @@ export class ProfilesContainer extends React.Component { // eslint-disable-line 
       let {onNewProfileFormDataChanged} = this.props
       return(
         <Dialog
-            title="Dialog With Actions"
+          titleStyle={{
+            textAlign: 'right'
+          }}
+            title="إضافة عرض جديد"
             actions={actions}
             modal={false}
             autoScrollBodyContent={true}
@@ -109,10 +158,12 @@ export class ProfilesContainer extends React.Component { // eslint-disable-line 
               <CreateNewForm
                 formFields={newProfileFormFiedls}
                 formData={newProfileFormData}
+                calculateUploadSpeed={true}
                 onFormDataChanged={(formData)=>{
                   onNewProfileFormDataChanged(formData)
                 }}
                 />
+              {this.renderProfilesDropDownMenu()}
             </div>
           </Dialog>
       )
@@ -126,6 +177,7 @@ export class ProfilesContainer extends React.Component { // eslint-disable-line 
         <ProfileGridItem
           key={index}
           checkbox={false}
+          showDots={true}
           name={profile.name}
           downloadLimit={profile.downloadLimit}
           uploadLimit={profile.uploadLimit}
@@ -133,6 +185,10 @@ export class ProfilesContainer extends React.Component { // eslint-disable-line 
           uploadSpeed={profile.uploadSpeed}
           offerLifetime={profile.offerLifetime}
           offerPrice={profile.offerPrice}
+          onDeleteClick={()=>{
+            this.props.onSelectProfile(profile)
+            this.setState({deleteProfileOpen: true})
+          }}
           />
       )
     }) : null
@@ -152,19 +208,34 @@ export class ProfilesContainer extends React.Component { // eslint-disable-line 
               />
           </ToolbarGroup>
         </Toolbar><br />
-        <Paper>
+      <Paper className={classNames("profilesWrapper")}>
           <ProfileGridItem
             checkbox={true}
             name="أسم العرض"
             downloadLimit="داونلود"
+            showDots={true}
             uploadLimit="ابلود"
-            downloadSpeed="سرعة الداونلود"
-            uploadSpeed="سرعة الابلود"
+            downloadSpeed="السرعة"
             offerLifetime="مدة العرض ( يوم )"
             offerPrice="سعر العرض"
             />
-          {this.renderCurrentProfiles()}
+          <div className={classNames("profilesTableBody")}>
+            {this.renderCurrentProfiles()}
+          </div>
           {this.renderAddNewProfile()}
+          <DialogComponent
+            open={this.state.deleteProfileOpen}
+            dialogLabel="حذف عرض"
+            addBtn={true}
+            createLabel="حذف"
+            onCancelClick={()=> this.setState({deleteProfileOpen: false})}
+            onAddClick={()=> {
+              this.props.onDeleteProfile()
+              this.setState({deleteProfileOpen: false})
+            }}
+            >
+            <h3>هل انت متاكد ؟</h3>
+          </DialogComponent>
         </Paper>
       </div>
     );
@@ -180,6 +251,8 @@ function mapDispatchToProps(dispatch) {
   return {
     onNewProfileFormDataChanged: profile => dispatch(addNewProfileFormData(profile)),
     onAddNewProfile: ()=> dispatch(addNewProfile()),
+    onSelectProfile: profile => dispatch(selectProfile(profile)),
+    onDeleteProfile: () => dispatch(deleteProfile()),
     dispatch,
   };
 }

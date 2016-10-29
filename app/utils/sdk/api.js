@@ -20,13 +20,16 @@ import fetch from 'utils/request'
       res.data.errors > 0 ? null : resShape.data = res.data.res.data
     }
   }
-  console.log(resShape);
+  // console.log(resShape);
   return resShape
 }
 
 function* post(url, data, type = 'post'){
-  console.log(url);
-  console.log(data);
+  // NOTE: ************************
+  // NOTE: Development request log
+  // console.log(url);
+  // console.log(data);
+  // NOTE: ************************
   let res = yield fetch(url,{
     method: type,
     headers:  {

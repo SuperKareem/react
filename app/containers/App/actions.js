@@ -20,6 +20,7 @@ import {
   LOAD_REPOS_SUCCESS,
   LOAD_REPOS_ERROR,
   SIGNIN_SUCCESS,
+  LOGOUT
 } from './constants';
 import APP from './constants'
 /**
@@ -88,4 +89,9 @@ export function repoLoadingError(error) {
     type: LOAD_REPOS_ERROR,
     error,
   };
+}
+export function logout() {
+  return {
+    type: LOGOUT
+  }
 }
