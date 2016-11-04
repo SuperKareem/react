@@ -12,10 +12,6 @@ var newUserFormData =  [
     title: 'كلمة السر'
   },
   {
-    name: 'email',
-    title: 'البريد الإلكترونى'
-  },
-  {
     name: 'macAddress',
     title: 'ماك'
   },
@@ -27,12 +23,12 @@ var newUserFormData =  [
     name: 'mobile',
     title: 'رقم الموبايل'
   },
+  {
+    name: 'email',
+    title: 'ملاحظات'
+  },
 ]
 var editUserFromData = [
-  {
-    name: 'comment',
-    title: 'الأسم'
-  },
   {
     name: 'name',
     title: 'اسم المستخدم'
@@ -42,32 +38,52 @@ var editUserFromData = [
     title: 'كلمة السر'
   },
   {
-    name: 'email',
-    title: 'البريد الإلكترونى'
+    name: 'comment',
+    title: 'الأسم'
   },
   {
-    name: 'macAddress',
-    title: 'ماك'
+    name: 'offerEndDate',
+    date: true,
+    title: 'تاريخ الإنتهاء'
   },
   {
     name: 'balance',
     title: 'الرصيد'
   },
   {
+    name: 'macAddress',
+    title: 'ماك'
+  },
+  {
     name: 'mobile',
     title: 'رقم الموبايل'
   },
   {
-    name: 'uptime',
-    title: 'Up Time'
-  },
-  {
     name: 'bytes-in',
+    disabled: true,
     title: 'Download'
   },
   {
     name: 'bytes-out',
+    disabled: true,
     title: 'Upload'
+  },
+  {
+    name: 'limit-bytes-in',
+    title: 'كوتة التحميل'
+  },
+  {
+    name: 'limit-bytes-out',
+    title: 'كوتة الرفع'
+  },
+  {
+    name: 'uptime',
+    disabled: true,
+    title: 'Up Time'
+  },
+  {
+    name: 'email',
+    title: 'ملاحظات'
   },
 ]
 

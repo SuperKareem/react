@@ -33,15 +33,16 @@ const initialState = fromJS({
   profiles: false,
   selectedUsers: false,
   editUserData: false,
+  selectedProfile: false,
 });
 
 function networkPageReducer(state = initialState, action) {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state;
-    case MIKROTIK.FETCH_ALL_USERS:
-      return state
-        .set('users', false)
+    // case MIKROTIK.FETCH_ALL_USERS:
+    //   return state
+    //     .set('users', false)
     case MIKROTIK.FETCH_ALL_USERS_SUCCESS:
       return state
         .set('users', action.users)
@@ -73,6 +74,9 @@ function networkPageReducer(state = initialState, action) {
     case MIKROTIK.ON_USER_DATA_CHANGED:
       return state
         .set('editUserData', action.changedData)
+    case MIKROTIK.RENEW_PROFILE_SELECTED:
+      return state
+        .set('selectedProfile', action.profile)
     default:
       return state;
   }

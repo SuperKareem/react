@@ -3,9 +3,11 @@
   flex-flow: row;
   justify-content: space-between;
   align-items: flex-start;
+  transition: all 0.2s ease-in;
+  max-height: 50px;
   & span{
-    font-weight: 300 !important;
-    font-size: 15px;
+    font-weight: bold;
+    font-size: 15px !important;
   }
 }
 hr {
@@ -29,13 +31,19 @@ hr {
   flex-wrap: nowrap;
 }
 .online {
-  background-color: rgba(29,233,182 ,0.15);
+  background-color: rgba(29,233,182 ,0.4);
 }
 .disabled {
-  background-color: rgba(158,158,158 ,0.3);
+  background-color: rgba(158,158,158 ,0.8);
+}
+.limited {
+  background: rgba(251,192,45 ,.5)
 }
 .dropDown{
   width: 100%;
   display: flex;
   flex-flow: column;
+}
+.broadband {
+  background: rgba(64,196,255 ,.3);
 }

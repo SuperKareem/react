@@ -19,7 +19,8 @@ var _newProilfe = {
   offerPrice: ''
 }
 const initialState = fromJS({
-  newProfileFormData: _newProilfe
+  newProfileFormData: _newProilfe,
+  selectedProfile: false
 });
 
 function profilesContainerReducer(state = initialState, action) {
@@ -27,6 +28,9 @@ function profilesContainerReducer(state = initialState, action) {
     case DEFAULT_ACTION.ADD_NEW_PROFILE_FORM_DATA_CAHNGED:
       return state
         .set('newProfileFormData', {...action.profile})
+    case DEFAULT_ACTION.SELECT_PROFILE:
+      return state
+        .set('selectedProfile', action.profile)
     case MIKROTIK.FETCH_ALL_PROFILES_SUCCESS:
       return state
         .set('newProfileFormData', {_newProilfe})

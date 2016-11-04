@@ -25,8 +25,11 @@ import fetch from 'utils/request'
 }
 
 function* post(url, data, type = 'post'){
+  // NOTE: ************************
+  // NOTE: Development request log
   console.log(url);
   console.log(data);
+  // NOTE: ************************
   let res = yield fetch(url,{
     method: type,
     headers:  {

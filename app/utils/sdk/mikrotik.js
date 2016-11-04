@@ -26,3 +26,7 @@ export function* addNewMikrottikProfile(data = {name, uploadSpeed, uploadLimit, 
   let url = uri.mikrotik.profiles.add;
   return yield api.post(url, data)
 }
+export function* deleteProfile(data){
+  let url = uri.mikrotik.profiles.delete;
+  return yield api.post(url, data, 'delete')
+}

@@ -24,3 +24,14 @@ export function addNewProfile(){
     type: DEFAULT_ACTION.ADD_NEW_PROFILE
   }
 }
+export function selectProfile(profile) {
+  return {
+    type: DEFAULT_ACTION.SELECT_PROFILE,
+    profile
+  }
+}
+export function deleteProfile() {
+  return {
+    type: DEFAULT_ACTION.DELETE_PROFILE,
+  }
+}

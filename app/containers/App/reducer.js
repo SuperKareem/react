@@ -15,8 +15,10 @@ import {
   LOAD_REPOS,
   LOAD_REPOS_ERROR,
   SIGNIN_SUCCESS,
-  NETWORK_SELECTED
+  NETWORK_SELECTED,
+  LOGOUT
 } from './constants';
+import { USER } from 'containers/UserSignIn/constants'
 import APP from './constants'
 import { fromJS } from 'immutable';
 
@@ -37,6 +39,7 @@ const initialState = fromJS({
     repositories: false,
   }),
   currentProfiles: false,
+  currentMikrotikUser: false,
 });
 
 function appReducer(state = initialState, action) {
@@ -70,6 +73,13 @@ function appReducer(state = initialState, action) {
     case APP.ADD_PROFILES_TO_GLOBAL_STATE:
       return state
         .set('currentProfiles', action.profiles)
+    case USER.SIGNIN_SUCCESS:
+      return state
+        .set('currentMikrotikUser', action.user)
+    case LOGOUT:
+      return state
+        .set('currentUser', false)
+        .set('currentNetwork', false)
     default:
       return state;
   }

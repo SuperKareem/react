@@ -14,6 +14,7 @@ import NewNetworkForm from 'components/NewNetworkForm'
 import UserGridItem from 'components/UserGridItem'
 import CreateNewForm from 'components/CreateNewForm'
 import EditUserDialog from 'components/EditUserDialog'
+import DialogComponent from 'components/DialogComponent'
 import { selectedUsersChanged, deleteSelectedUsers } from './actions'
 import form from './formData'
 import {
@@ -23,6 +24,9 @@ import {
   addNewMikrotikUserErrorOk,
   onUserToEditDataChanged,
   editUserData,
+  fetchMikrotikUsersIntervalFun,
+  renewProfile,
+  renewProfileSelected
 } from './actions'
 import {
   Paper,
@@ -35,7 +39,7 @@ import {
   TextField,
   DropDownMenu,
   Checkbox,
-  MenuItem
+  MenuItem, Popover
 } from 'material-ui'
 
 export class NetworkPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -49,12 +53,21 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
       selectedUsers: 0,
       editDialogOpend: false,
       currentUserToEdit: false,
-      macAddressChecked: false
+      macAddressChecked: false,
+      renewUserOpened: false,
+      profileMenuOpen: false,
+      sorting: 'all',
+      pageNum: 1,
+      deleteUserOpen: false,
+      userToDelete: null,
     }
     this.selectedUsers = [];
     this.addNewUserFormFields = form.newUserFormData
     this.editUserFromFields = form.editUserFromData
     this.accountTypes = form.accountTypes
+  }
+  componentDidMount(){
+
   }
   resetCurrentProfileState(){
     this.setState({
@@ -75,80 +88,104 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
   editUser(user, changedData ){
 
   }
+  sorting(index, user){
+    let maxIndex = this.state.pageNum * 10;
+    let minIndex = (this.state.pageNum - 1 ) * 10;
+    switch (this.state.sorting) {
+      case "online":
+        if(!!user.active){
+          return this.renderUserItem(index, user);
+        }
+        break;
+      case "disabled":
+        if(user.disabled == "true"){
+          return this.renderUserItem(index, user);
+        }
+        break;
+      case "limited":
+      let _bytesIn = user.accountType == "broadband" && user['bytes-in'].indexOf("NaN") > -1 ? 0 : user['bytes-in']
+        if(parseFloat(_bytesIn - .01) >= parseFloat(user['limit-bytes-in'])){
+          return this.renderUserItem(index, user);
+        }
+        break;
+      default:
+        let {searchUser} = this.state;
+        if(searchUser != ""){
+          if(user.name.toLowerCase().indexOf(searchUser) != -1 || (!!user.comment && user.comment.toLowerCase().indexOf(searchUser) != -1)){
+            return this.renderUserItem(index, user)
+          }
+        } else if(index < maxIndex && index > minIndex){
+          return this.renderUserItem(index, user)
+        }
+        break;
+    }
+  }
+  renderUserItem(index, user){
+      let _bytesIn = user.accountType == "broadband" && user['bytes-in'].indexOf("NaN") > -1 ? 0 : user['bytes-in']
+    return (
+      <UserGridItem
+        index={index}
+        edit={true}
+        key={index}
+        offerEndDate={new Date(user.offerEndDate).toDateString()}
+        checkbox={false}
+        name={user.name}
+        password={user.password}
+        profile={user.profile}
+        bytesIn={_bytesIn}
+        bytesOut={user['bytes-out']}
+        accountType={user.accountType}
+        comment={user.comment}
+        limited={parseFloat(_bytesIn - .01) >= parseFloat(user['limit-bytes-in'])}
+        active={!!user.active}
+        disabled={user.disabled}
+        onEditClick={() => {
+          this.props.onUsersSelectionChanged(user)
+          this.toggleEditDialog(user)
+        }}
+        onDeleteClick={() => {
+          this.setState({
+            userToDelete: user,
+            deleteUserOpen: true
+          })
+        }}
+        onRenewClick={() => {
+          this.props.onUsersSelectionChanged(user)
+          this.setState({renewUserOpened: true})
+        }}
+        onDisableClick={()=>{
+          this.props.onUsersSelectionChanged(user)
+          this.props.onEditUserDataChanged({...user, ...{disabled: user.disabled == "true" ? "false" : "true"}})
+          this.props.onEditUser()
+        }}
+          />
+    )
+  }
   renderUsers(){
-    if(!this.props.users )
+    if(!this.props.users || !!!this.props.users.data.map )
       return
 
     let {
       searchUser
     } = this.state;
     return this.props.users.data.map((user, index)=>{
-      if(searchUser != ''){
-        if(user.name.toLowerCase().indexOf(searchUser) != -1 ||
-          (!!user.comment &&
-          user.comment.toLowerCase().indexOf(searchUser) != -1)){
-          return (
-            <UserGridItem
-              index={index}
-              edit={true}
-              key={index}
-              checkbox={false}
-              name={user.name}
-              password={user.password}
-              profile={user.profile}
-              bytesIn={user['bytes-in']}
-              bytesOut={user['bytes-out']}
-              comment={user.comment}
-              active={!!user.active}
-              onEditClick={() => {
-                this.props.onUsersSelectionChanged(user)
-                this.toggleEditDialog(user)
-              }}
-              onDeleteClick={() => {
-                this.deleteUser(user)
-              }}
-              onDisableClick={()=>{
-                this.props.onUsersSelectionChanged(user)
-                this.props.onEditUserDataChanged({...user, ...{disabled: !user.disabled}})
-                this.props.onEditUser()
-
-              }}
-                />
-          )
-        }
-      } else {
-        return (
-          <UserGridItem
-            index={index}
-            edit={true}
-            key={index}
-            checkbox={false}
-            name={user.name}
-            password={user.password}
-            profile={user.profile}
-            bytesIn={user['bytes-in']}
-            bytesOut={user['bytes-out']}
-            comment={user.comment}
-            active={!!user.active}
-            disabled={user.disabled == "true"}
-            onEditClick={() => {
-              this.props.onUsersSelectionChanged(user)
-              this.toggleEditDialog(user)
-            }}
-            onDeleteClick={() => {
-              this.deleteUser(user)
-            }}
-            onDisableClick={()=>{
-              console.log(user.disabled);
-              this.props.onUsersSelectionChanged(user)
-              this.props.onEditUserDataChanged({...user, ...{disabled: user.disabled == "true" ? false : true}})
-              this.props.onEditUser()
-
-            }}
-            />
-
-        )
-      }
+      // let maxIndex = this.state.pageNum * 10;
+      // let minIndex = (this.state.pageNum - 1 ) * 10;
+      return this.sorting(index, user);
+      // if(searchUser != ''){
+      //   return this.sorting(index, user)
+      //   if(user.name.toLowerCase().indexOf(searchUser) != -1 || (!!user.comment && user.comment.toLowerCase().indexOf(searchUser) != -1)){
+      //   }
+      // } else {
+      // }
+        // if(user.name.toLowerCase().indexOf(searchUser) != -1 ||
+        // (!!user.comment &&
+        //   user.comment.toLowerCase().indexOf(searchUser) != -1)){
+        //     return this.sorting(index, user);
+        //   }
+        // } else if(index < maxIndex && index > minIndex){
+        //   return this.sorting(index, user)
+        // }
     })
   }
   toggleEditDialog(currentUserToEdit){
@@ -182,56 +219,74 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
         </Dialog>
       )
   }
-  renderProfilesDropDownMenu(){
+  renderProfilesDropDownMenu(onProfileSelected){
     let {profiles} = this.props;
     return(
-      <div className={classNames("profileDropDown")}>
-        <h4>{this.state.currentProfile}</h4>
-        <DropDownMenu
-          value={this.props.newUserForm.profile}
-          >
-          <div className={classNames("dropdownClass")}>
-            {!!profiles.data && profiles.data.length > 0 ? profiles.data.map((profile, index)=>{
-              return(
-                <FlatButton
-                  key={index}
-                  secondary={true}
-                  label={profile.name}
-                  onClick={()=>{
-                    this.props.onAddNewMikrotikFormDataChanged({...this.props.newUserForm, ...{profile: profile.name}})
-                    this.setState({currentProfile: profile.name})
-                  }}
-                  />
-              )
-            }): null}
-          </div>
-        </DropDownMenu>
+      <div className={classNames("")} style={{padding: 20}}>
+        <RaisedButton
+          secondary={true}
+          onClick={event => this.setState({profileMenuOpen: true, anchorEl: event.currentTarget})}
+          label={this.state.currentProfile}
+          />
+           <Popover
+            open={this.state.profileMenuOpen}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={()=> this.setState({profileMenuOpen: false})}
+            >
+            <div className={classNames("dropdownClass")}>
+              {!!profiles.data && profiles.data.length > 0 ? profiles.data.map((profile, index)=>{
+                return(
+                  <FlatButton
+                    key={index}
+                    secondary={true}
+                    label={profile.name}
+                    onClick={()=>{
+                      !!onProfileSelected ?
+                      onProfileSelected(profile) :
+                      this.props.onAddNewMikrotikFormDataChanged({...this.props.newUserForm, ...{profile: profile.name}})
+                      this.setState({currentProfile: profile.name, profileMenuOpen: false})
+                    }}
+                    />
+                )
+              }): null}
+            </div>
+          </Popover>
       </div>
     )
   }
   renderAccountTypeDropdown(){
     return(
-      <div className={classNames("profileDropDown")}>
-        <h4>{this.state.newAccountType}</h4>
-        <DropDownMenu
-          value={this.props.newUserForm.profile}
-          >
-          <div className={classNames("dropdownClass")}>
-            {this.accountTypes.map((type, index)=>{
-              return(
-                <FlatButton
-                  key={index}
-                  secondary={true}
-                  label={type.title}
-                  onClick={()=>{
-                    this.props.onAddNewMikrotikFormDataChanged({...this.props.newUserForm, ...{accountType: type.name}})
-                    this.setState({newAccountType: type.title})
-                  }}
-                  />
-              )
-            })}
-          </div>
-        </DropDownMenu>
+      <div className={classNames("")} style={{padding: 20}}>
+        <RaisedButton
+          secondary={true}
+          onClick={event => this.setState({accountTypesOpen: true, anchorEl: event.currentTarget})}
+          label={this.state.newAccountType}
+          />
+           <Popover
+            open={this.state.accountTypesOpen}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={()=> this.setState({accountTypesOpen: false})}
+            >
+            <div className={classNames("dropdownClass")}>
+              {this.accountTypes.map((type, index)=>{
+                return(
+                  <FlatButton
+                    key={index}
+                    secondary={true}
+                    label={type.title}
+                    onClick={()=>{
+                      this.props.onAddNewMikrotikFormDataChanged({...this.props.newUserForm, ...{accountType: type.name}})
+                      this.setState({newAccountType: type.title, accountTypesOpen: false})
+                    }}
+                    />
+                )
+              })}
+            </div>
+          </Popover>
       </div>
     )
   }
@@ -294,11 +349,13 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
     )
   }
   render() {
+    let onProfileSelected = (profile) => {
+      this.props.onRenewProfileSelected(profile)
+    }
     return (
       <div className={classNames("networkPage")}>
         <Toolbar className={classNames("toolbar")}>
           <ToolbarGroup>
-
             <div className={classNames("searchField")}>
               <TextField
                 defaultValue={this.state.searchUser}
@@ -310,6 +367,10 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
                 }}
                 />
             </div>
+            <FlatButton
+              label="الغاء البحث"
+              onClick={()=> this.setState({searchUser: ''})}
+            />
           </ToolbarGroup>
           <ToolbarGroup>
             <RaisedButton
@@ -327,14 +388,52 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
             <UserGridItem
               checkbox={true}
               name="اسم المستخدم"
-              password={"كلمة السر"}
+              offerEndDate="تاريخ الإنتهاء"
               profile="العرض"
-              bytesIn="داونلود"
+              bytesIn="التحميل"
               bytesOut="ابلود"
               comment="الأسم"
+              dateFormat={true}
+              sortName={this.state.sorting}
+              sorting={(sortBy)=>{
+                this.setState({sorting: sortBy})
+              }}
               />
             <div dir="rtl" className={classNames("usersTableBody")}>
               {this.renderUsers()}
+            </div>
+          </div>
+          <div className={classNames("pagingContainer")}>
+            <div>
+              <RaisedButton
+                label="السابق"
+                primary={true}
+                disabled={((this.state.pageNum - 1) == 0)}
+                onClick={()=> {
+                  if((this.state.pageNum - 1) > 0)
+                    this.setState({pageNum: this.state.pageNum - 1})
+                  }
+                }
+              />
+            </div>
+            <div>
+              <FlatButton
+                label={`صفحة رقم ${this.state.pageNum}`}
+              />
+            </div>
+            <div>
+              <RaisedButton
+                label="التالي"
+                primary={true}
+                disabled={!(((this.props.users.data.length / 10) - (this.state.pageNum + 1)) > -1)}
+                onClick={()=> {
+                  let {pageNum} = this.state
+                  let max = this.props.users.data.length / 10;
+                  if((max - (pageNum + 1)) > -1)
+                    this.setState({pageNum: pageNum + 1})
+                  }
+                }
+              />
             </div>
           </div>
         </Paper>
@@ -352,6 +451,7 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
             this.props.onEditUserDataChanged(formData)
           }}
           onProfileChanged={(profile)=>{
+            this.setState({currentUserToEdit: {...this.state.currentUserToEdit, ...{profile: profile.name}}})
             this.props.onEditUserDataChanged({...this.props.editUserData, ...{profile}})
           }}
           onEditClick={()=>{
@@ -362,6 +462,42 @@ export class NetworkPage extends React.Component { // eslint-disable-line react/
             this.toggleEditDialog(false)
           }}
           />
+          <DialogComponent
+            open={this.state.renewUserOpened}
+            createLabel="تجديد"
+            dialogLabel="تجديد الإشتراك"
+            onCancelClick={()=>{
+              this.setState({renewUserOpened: false})
+              this.resetCurrentProfileState()
+            }}
+            onAddClick={()=>{
+              this.props.onRenewProfile()
+              this.setState({renewUserOpened: false})
+            }}
+            >
+            <div className={classNames("offerChoosing")}>
+              <h3>
+                اختيار العرض
+              </h3>
+              {this.renderProfilesDropDownMenu(onProfileSelected)}
+            </div>
+        </DialogComponent>
+        <DialogComponent
+        open={this.state.deleteUserOpen}
+        createLabel="حذف"
+        dialogLabel="حذف مستخدم"
+        onCancelClick={()=>{
+          this.setState({deleteUserOpen: false})
+        }}
+        onAddClick={()=>{
+          this.deleteUser(this.state.userToDelete)
+          this.setState({deleteUserOpen: false})
+        }}
+        >
+        <div>
+          <h3>هل انت متأكد من الحذف</h3>
+        </div>
+      </DialogComponent>
       </div>
     );
   }
@@ -378,7 +514,10 @@ function mapDispatchToProps(dispatch) {
     onAddNewMikrotikUserErrorOk: () => dispatch(addNewMikrotikUserErrorOk()),
     onUsersSelectionChanged: (user) => dispatch(selectedUsersChanged(user)),
     onEditUserDataChanged: (user) => dispatch(onUserToEditDataChanged(user)),
+    onFetchInterval: ()=> dispatch(fetchMikrotikUsersIntervalFun()),
     onEditUser: () => dispatch(editUserData()),
+    onRenewProfileSelected : (profile) => dispatch(renewProfileSelected(profile)),
+    onRenewProfile : () => dispatch(renewProfile()),
     onAddNewMikrotikFormDataChanged: (user) => dispatch(addNewMikrotikUserFormDataChanged(user))
   };
 }

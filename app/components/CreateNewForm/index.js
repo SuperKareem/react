@@ -39,13 +39,47 @@ class CreateNewForm extends React.Component { // eslint-disable-line react/prefe
                 </div>
               )
             }
-          } else {
+          } else if (!!field.auto) {
             return(
               <div key={index} className="">
                 <TextField
                   floatingLabelText={field.title}
                   fullWidth={true}
-                  defaultValue={formData[field.name]}
+                  disabled={!!field.disabled}
+                  defaultValue={!!formData.downloadSpeed ? (formData.downloadSpeed / 4) : '' }
+                  onChange={(e) => {
+                    console.log((formData.downloadSpeed / 4));
+                    onFormDataChanged({...formData, ...{[`${field.name}`]: !!formData.downloadSpeed ? (formData.downloadSpeed / 4) : ''}})
+                  }}
+                  />
+                <br />
+              </div>
+            )
+          } else {
+            if(field.name == "email"){
+              return(
+                <div key={index} className="">
+                  <TextField
+                    floatingLabelText={field.title}
+                    fullWidth={true}
+                    rows={5}
+                    disabled={!!field.disabled}
+                    defaultValue={!!field.date ? new Date(formData[field.name]).toDateString() : formData[field.name]}
+                    onChange={(e) => {
+                      onFormDataChanged({...formData, ...{[`${field.name}`]: e.target.value}})
+                    }}
+                    />
+                  <br />
+                </div>
+              )
+            }
+            return(
+              <div key={index} className="">
+                <TextField
+                  floatingLabelText={field.title}
+                  fullWidth={true}
+                  disabled={!!field.disabled}
+                  defaultValue={!!field.date ? new Date(formData[field.name]).toDateString() : formData[field.name]}
                   onChange={(e) => {
                     onFormDataChanged({...formData, ...{[`${field.name}`]: e.target.value}})
                   }}

@@ -20,6 +20,9 @@ class Signin extends React.Component { // eslint-disable-line react/prefer-state
     onUsernameChange: React.PropTypes.func.isRequired,
     onPasswordChange: React.PropTypes.func.isRequired
   }
+  static defaultProps = {
+    admin: true
+  }
   render() {
     let {
       username,
@@ -37,6 +40,11 @@ class Signin extends React.Component { // eslint-disable-line react/prefer-state
               floatingLabelText="أسم المستخدم"
               fullWidth={true}
               defaultValue={username}
+              onKeyUp={e => {
+                if(e.key == "Enter"){
+                  onSigninClick()
+                }
+              }}
               onChange={(e) => {
                 onUsernameChange(e)
               }}
@@ -45,6 +53,12 @@ class Signin extends React.Component { // eslint-disable-line react/prefer-state
               floatingLabelText="كلمة السر"
               fullWidth={true}
               defaultValue={password}
+              type="password"
+              onKeyUp={e => {
+                if(e.key == "Enter"){
+                  onSigninClick()
+                }
+              }}
               onChange={(e) => {
                 onPasswordChange(e)
               }}
@@ -55,7 +69,7 @@ class Signin extends React.Component { // eslint-disable-line react/prefer-state
               onClick={()=>{
                 onSigninClick(username, password)
               }}
-              />
+              /><br /> <br />
           </div>
         </Paper>
       </div>

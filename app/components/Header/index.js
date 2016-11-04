@@ -16,7 +16,8 @@ import {
   MenuItem,
   FlatButton,
   LinearProgress,
-  RaisedButton
+  RaisedButton,Toolbar,
+  ToolbarGroup,
 } from 'material-ui'
 import { push } from 'react-router-redux'
 var menuItems = [
@@ -27,6 +28,14 @@ var menuItems = [
   {
     title: "العروض",
     push: '/profiles'
+  },
+  {
+    title: "الكروت",
+    push: '/serials'
+  },
+  {
+    title: "السجل",
+    push: '/logs'
   }
 ]
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -41,81 +50,49 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
       drawerDocked: !this.state.drawerDocked
     })
   }
-  renderDrawer(){
-    let leftButton = <IconButton
-                        iconClassName={classNames("fa")}
-                        onClick={() => {
-                          this.toggleDrawer()
-                        }}
-                        >
-                        <i className={classNames("fa","fa-bars")}></i>
-                      </IconButton>
-    return(
-      <Drawer
-        open={this.state.drawerDocked}
-        openSecondary={true}
-        overlayStyle={{
-          backgroundColor: `rgba(0,0,0,.5)`,
-          zIndex: 1000
-        }}
-        >
-        <div className={classNames("menuContainer")}>
-          <AppBar
-            title="MicroNet"
-            iconElementLeft={leftButton}
-            >
-          </AppBar>
-          {menuItems.map((item, index)=>{
-            return(
-              <FlatButton
-                key={index}
-                label={item.title}
-                style={{
-                  width: '100%',
-                }}
-                onClick={() => {
-                  this.toggleDrawer()
-                  this.props.push(item.push)
-                }}
-                />
-            )
-          })}
-        </div>
-      </Drawer>
-    )
-  }
+
   renderLoadIndicator(){
     let {isFetching} = this.props;
     if(isFetching){
       return(
         <div className={classNames("indicator")}>
-          <LinearProgress color="rgb(255, 64, 129)" mode="indeterminate" /><br />
+          <LinearProgress color="rgb(255, 64, 129)" mode="indeterminate" />
         </div>
       )
     }
   }
   render() {
-    let rightButton = <IconButton
-
-                        />
-    let leftButton = <IconButton
-                        iconClassName={classNames("fa")}
-                        onClick={() => {
-                          this.toggleDrawer()
-                        }}
-                        >
-                        <i className={classNames("fa","fa-bars")}></i>
-                      </IconButton>
     return (
       <div className={classNames("header")}>
-        <AppBar
-              className={classNames("appBar")}
-              showMenuIconButton={true}
-              iconElementLeft={leftButton}
-              title="MicroNet">
-            </AppBar>
-          {this.renderLoadIndicator()}
-        {this.renderDrawer()}
+        {!!this.props.currentUser ?
+           <Toolbar>
+             <ToolbarGroup>
+               {menuItems.map((item, index)=>{
+                 return(
+                   <RaisedButton
+                     primary={true}
+                     key={index}
+                     label={item.title}
+                     onClick={() => {
+                       this.props.push(item.push)
+                     }}
+                     />
+                 )
+               })}
+             </ToolbarGroup>
+             <ToolbarGroup>
+               <RaisedButton
+                 secondary={true}
+                 label="تسجيل الخروج"
+                 onClick={() => {
+                   this.props.onLogout()
+                   this.props.push("/signin")
+                 }}
+                 />
+             </ToolbarGroup>
+           </Toolbar>
+           : null}
+        {this.renderLoadIndicator()}
       </div>
     );
   }

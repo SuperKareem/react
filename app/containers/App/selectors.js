@@ -11,6 +11,11 @@ const selectCurrentUser = () => createSelector(
   (globalState) => globalState.get('currentUser')
 );
 
+const selectCurentMikrotikUser = () => createSelector(
+  selectGlobal(),
+  (globalState) => globalState.get('currentMikrotikUser')
+);
+
 const selectLoading = () => createSelector(
   selectGlobal(),
   (globalState) => globalState.get('loading')
@@ -58,4 +63,5 @@ export {
   selectLocationState,
   selectCurrentNetwork,
   selectCurrentProfiles,
+  selectCurentMikrotikUser,
 };

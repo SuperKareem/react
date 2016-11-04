@@ -15,13 +15,18 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux'
 import { createStructuredSelector } from 'reselect'
 import Banner from './banner-metal.jpg';
-import { selectLoading } from './selectors'
+import notoFont from './NotoKufiArabic-Regular.ttf';
+import { selectLoading, selectCurrentUser } from './selectors'
 import classes from './styles.css'
 import classNamesBind from 'classnames/bind';
 import Header from 'components/Header'
-
+import back from './back.jpg'
+import { Paper } from 'material-ui'
 var classNames = classNamesBind.bind(classes);
 var injectTapEventPlugin = require("react-tap-event-plugin");
+import {
+  logout
+} from './actions'
 import {
   MuiThemeProvider
  } from 'material-ui'
@@ -36,17 +41,28 @@ import {
    render(){
      return (
        <MuiThemeProvider>
-         <div  dir="rtl" className={classNames("container")}>
+         <div
+           style={{
+             backgroundImage: `url(${back})`,
+             fontFamily: `url(${notoFont})`
+           }}
+           dir="rtl" className={classNames("container")}>
            <div className={classNames("header")}>
              <Header
                push={(url)=>{
                  this.props.dispatch(push(url))
                }}
                isFetching={this.props.isFetching}
+               currentUser={this.props.currentUser}
+               onLogout={()=>{
+                 this.props.onLogout()
+               }}
                />
            </div>
            <div className={classNames("wrapper")}>
-             {this.props.children}
+             <Paper className={classNames("wrapperPaper")}>
+               {this.props.children}
+             </Paper>
            </div>
          </div>
        </MuiThemeProvider>
@@ -55,11 +71,13 @@ import {
  }
 
 const mapStateToProps = createStructuredSelector({
-  isFetching: selectLoading()
+  isFetching: selectLoading(),
+  currentUser: selectCurrentUser()
 });
 
 export function mapDispatchToProps(dispatch) {
   return {
+    onLogout: () => dispatch(logout()),
     dispatch,
   };
 }

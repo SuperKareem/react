@@ -16,8 +16,9 @@ import {
   FlatButton,
   IconMenu,
   IconButton,
-  MenuItem,
+  MenuItem,RaisedButton
 } from 'material-ui'
+import formatDate from 'utils/formatingDate'
 
 class UserGridItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props){
@@ -33,7 +34,7 @@ class UserGridItem extends React.Component { // eslint-disable-line react/prefer
   render() {
     let {
       name,
-      password,
+      offerEndDate,
       profile,
       disabled,
       uptime,
@@ -44,19 +45,41 @@ class UserGridItem extends React.Component { // eslint-disable-line react/prefer
       onUserSelected,
       onUserDeselected,
       active,
+      sortName,
+      dateFormat,
+      accountType
     } = this.props
-    let iconBtn = <FlatButton
-      secondary={true}
-      disabled={this.props.checkbox}
-      iconClassName={classNames("fa")}>
-      <i className={classNames("fa","fa-ellipsis-v", "v")}></i>
+    // let _bytesIn = accountType == "broadband" && bytesIn.indexOf("NaN") > -1 ? 0 : bytesIn
+    let sortTitle = ''
+    switch (sortName) {
+      case 'online':
+        sortTitle ="متصل"
+        break;
+      case 'disabled':
+        sortTitle = "موقوف"
+        break;
+      case 'limited':
+        sortTitle = "منتهي"
+        break;
+      default:
+        sortTitle= "الكل"
+    }
+    let iconBtn = <RaisedButton
+      primary={true}
+      label="خيارات">
+    </RaisedButton>
+    let iconBtn2 = <FlatButton
+      primary={true}
+      label={sortTitle}>
     </FlatButton>
     return (
       <div className="">
         <div className={classNames("userGridItem",{
             userGridItemHover: this.state.hover,
             online: !!active && !this.state.hover,
-            disabled: !!disabled && !this.state.hover
+            broadband: !!active && accountType == "broadband",
+            limited: this.props.limited,
+            disabled: disabled == "true" && !this.state.hover,
           })}
           onMouseOver={()=>{
             this.setState({hover: true})
@@ -68,41 +91,58 @@ class UserGridItem extends React.Component { // eslint-disable-line react/prefer
           }}
           >
           <div className={classNames("padding")}>
-            <IconMenu
+            {!!!this.props.checkbox ? <IconMenu
               iconButtonElement={iconBtn}
               >
               <div className={classNames("dropDown")}>
                 <FlatButton secondary={true} label="تجديد" onClick={() => {
+                    this.props.onRenewClick();
                   }} />
                 <FlatButton secondary={true} label="تعديل" onClick={() => {
                     this.props.onEditClick();
                   }}/>
-                <FlatButton secondary={true} label={disabled ? "تفعيل" : "إيقاف"} onClick={() => {
+                <FlatButton secondary={true} label={disabled == "true" ? "تفعيل" : "إيقاف"} onClick={() => {
                     this.props.onDisableClick();
                   }} />
                 <FlatButton secondary={true} label="حذف" onClick={() => {
                   this.props.onDeleteClick();
                 }} />
               </div>
+            </IconMenu> :
+            <IconMenu
+              iconButtonElement={iconBtn2}
+              >
+              <div className={classNames("dropDown")}>
+                <FlatButton secondary={true} label="الكل" onClick={() => {
+                    this.props.sorting('all')
+                  }} />
+                <FlatButton secondary={true} label="متصل" onClick={() => {
+                    this.props.sorting('online')
+                  }} />
+                <FlatButton secondary={true} label="موقوف" onClick={() => {
+                    this.props.sorting('disabled')
+                  }}/>
+                <FlatButton secondary={true} label="منتهي" onClick={() => {
+                    this.props.sorting('limited')
+                }} />
+              </div>
             </IconMenu>
+          }
           </div>
-          <div className={classNames("padding")}>
+          <div className={classNames("padding")} onClick={()=> this.props.onEditClick()}>
             <span>{comment}</span>
           </div>
-          <div className={classNames("padding")}>
+          <div className={classNames("padding")} onClick={()=> this.props.onEditClick()}>
             <span>{name}</span>
           </div>
-          <div className={classNames("padding")}>
-            <span>{password}</span>
-          </div>
-          <div className={classNames("padding")}>
+          <div className={classNames("padding")} onClick={()=> this.props.onEditClick()}>
             <span>{profile}</span>
           </div>
-          <div className={classNames("padding")}>
+          <div className={classNames("padding")} onClick={()=> this.props.onEditClick()}>
             <span>{bytesIn}</span>
           </div>
-          <div className={classNames("padding")}>
-            <span>{bytesOut}</span>
+          <div className={classNames("padding")} onClick={()=> this.props.onEditClick()}>
+            <span>{!!dateFormat ? offerEndDate : formatDate(offerEndDate)}</span>
           </div>
         </div>
         <hr />

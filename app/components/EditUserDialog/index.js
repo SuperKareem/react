@@ -11,10 +11,16 @@ import classNamesBind from 'classnames/bind';
 import CreateNewForm from 'components/CreateNewForm'
 var classNames = classNamesBind.bind(classes);
 import {
-  Dialog, DropDownMenu, FlatButton,TextField,
+  Dialog, DropDownMenu, FlatButton,TextField, Popover, RaisedButton
 } from 'material-ui'
 
 class EditUserDialog extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props){
+    super(props)
+    this.state = {
+      profileMenuOpen: false
+    }
+  }
   getActions(){
     const actions = [<FlatButton
       label="إلغاء"
@@ -37,15 +43,22 @@ class EditUserDialog extends React.Component { // eslint-disable-line react/pref
 
   renderProfilesDropDownMenu(){
     let {profiles} = this.props;
+    
     return(
       <div className={classNames("profileDropDown")}>
-        <TextField
-          disabled={true}
-          floatingLabelText="العرض"
-          defaultValue={this.props.currentUserProfile}
-          />
-        <div style={{paddingTop: 16}}>
-          <DropDownMenu
+        <div className={classNames("row")}>
+          <span> العرض </span>
+          <RaisedButton
+            secondary={true}
+            onClick={event => this.setState({profileMenuOpen: true, anchorEl: event.currentTarget})}
+            label={this.props.currentUserProfile}
+            />
+          <Popover
+            open={this.state.profileMenuOpen}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={()=> this.setState({profileMenuOpen: false})}
             >
             <div className={classNames("dropdownClass")}>
               {!!profiles.data && profiles.data.length > 0 ? profiles.data.map((profile, index)=>{
@@ -56,18 +69,21 @@ class EditUserDialog extends React.Component { // eslint-disable-line react/pref
                     label={profile.name}
                     onClick={()=>{
                       this.props.onProfileChanged(profile)
+                      this.setState({profileMenuOpen: false})
                     }}
                     />
                 )
               }): null}
             </div>
-          </DropDownMenu>
+          </Popover>
         </div>
-        <TextField
-          disabled={true}
-          floatingLabelText="نوع الحساب"
-          defaultValue={this.props.user.accountType}
-          />
+          <div className={classNames("row")}>
+            <span>نوع الحساب</span>
+            <RaisedButton
+              disabled={true}
+              label={this.props.user.accountType}
+              />
+          </div>
       </div>
     )
   }

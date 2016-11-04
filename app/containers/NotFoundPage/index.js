@@ -14,9 +14,9 @@ import { FormattedMessage } from 'react-intl';
 export function NotFound(props) {
   return (
     <article>
-      <H1>
+      <h1>
         <FormattedMessage {...messages.header} />
-      </H1>
+      </h1>
       <Button
         handleRoute={function redirect() {
           props.dispatch(push('/'));
